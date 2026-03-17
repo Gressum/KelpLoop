@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KelpLoop — Project Control Centre</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0f1a;--s1:#111827;--s2:#1a2235;--s3:#1e293b;--bd:#2a3550;--t1:#e2e8f0;--t2:#8896b0;--t3:#64748b;--g:#16a34a;--a:#d97706;--r:#dc2626;--b:#2563eb;--n:#64748b}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh}
+.mono{font-family:'JetBrains Mono',monospace}
+.header{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--g),var(--b));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
+.tabs{display:flex;background:var(--s2);border-radius:8px;padding:3px;flex-wrap:wrap}
+.tab{padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:600;background:transparent;color:var(--t2);transition:all .15s;font-family:inherit}
+.tab.active{background:var(--t1);color:var(--bg)}
+.content{padding:20px 24px;max-width:1400px;margin:0 auto}
+.grid{display:grid;gap:12px}
+.g6{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
+.g4{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g5{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px}
+.card-sm{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center}
+.kpi-card{border-top:3px solid var(--b)}
+.lbl{font-size:11px;color:var(--t3);margin-bottom:4px}
+.val{font-size:20px;font-weight:800}
+.val-sm{font-size:18px;font-weight:800}
+.sub{font-size:11px;color:var(--t3);margin-top:4px}
+.bar-track{background:var(--s3);border-radius:99px;height:6px;width:100%;overflow:hidden}
+.bar-fill{height:100%;border-radius:99px;transition:width .5s}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px}
+.pill{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{padding:10px 12px;text-align:center;font-size:10px;font-weight:600;color:var(--t2);text-transform:uppercase;letter-spacing:.5px;border-bottom:2px solid var(--bd);background:var(--s2)}
+td{padding:8px 12px;text-align:center;border-bottom:1px solid var(--s3)}
+th.left,td.left{text-align:left}
+.phase-hdr{display:flex;justify-content:space-between;padding:10px 14px;background:var(--s2);border:1px solid var(--bd);border-radius:10px 10px 0 0}
+.gate-bar{margin-top:6px;padding:8px 14px;border:1px dashed rgba(217,119,6,.4);border-radius:8px;display:flex;justify-content:space-between;font-size:12px;background:rgba(217,119,6,.04)}
+.view{display:none}.view.active{display:block}
+.mb12{margin-bottom:12px}.mb16{margin-bottom:16px}.mb20{margin-bottom:20px}.mb24{margin-bottom:24px}
+.flex{display:flex;align-items:center;gap:6px}
+.flex-between{display:flex;justify-content:space-between;align-items:center}
+.f11{font-size:11px}.f12{font-size:12px}.f13{font-size:13px}.f14{font-size:14px}.f15{font-size:15px}
+.fw7{font-weight:700}.fw8{font-weight:800}
+.tc{text-align:center}.tr{text-align:right}
+input,select{background:var(--s2);border:1px solid var(--bd);border-radius:6px;color:var(--t1);padding:5px 8px;font-size:12px;font-family:'JetBrains Mono',monospace}
+select{font-family:'DM Sans',sans-serif;font-size:11px}
+.risk-cell{border-radius:6px;padding:4px;min-height:36px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}
+.csf-ring{position:relative;flex-shrink:0}
+.warn-box{padding:14px;border-radius:10px;font-size:13px}
+@media(max-width:800px){.g3{grid-template-columns:1fr 1fr}.g6{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="flex" style="gap:12px">
+    <div class="logo">K</div>
+    <div>
+      <div class="fw8" style="font-size:18px">KelpLoop</div>
+      <div style="font-size:11px;color:var(--t3)">Project Control Centre — ALDI Sustainable Packaging</div>
+    </div>
+  </div>
+  <div class="flex" style="gap:10px;flex-wrap:wrap">
+    <div class="flex f11" style="color:var(--t2)">Date:
+      <input type="date" id="simDate" value="2026-05-15" style="font-family:'JetBrains Mono',monospace">
+    </div>
+    <div class="tabs" id="tabBar"></div>
+  </div>
+</div>
+
+<div class="content" id="app"></div>
+
+<script>
+// ═══ DATA ═══
+const RISKS=[
+{id:"R01",name:"Material performance failure",phase:"P2",l:4,i:5,delay:21,cost:60000,resp:"Test multiple formulations in parallel; engage backup supplier"},
+{id:"R02",name:"EN 13432 certification failure",phase:"P3",l:3,i:5,delay:28,cost:50000,resp:"Pre-screen against EN 13432; budget for re-test cycle"},
+{id:"R03",name:"Seaweed supply variability",phase:"P1",l:4,i:4,delay:14,cost:35000,resp:"Dual-source ≥2 suppliers; pre-qualify backup species"},
+{id:"R04",name:"Prototype iteration overrun",phase:"P2",l:3,i:4,delay:14,cost:40000,resp:"Parallel fabrication; crash with overtime"},
+{id:"R05",name:"Cold chain test failure",phase:"P3",l:2,i:4,delay:10,cost:25000,resp:"Pre-screen at university lab; reformulation plan"},
+{id:"R06",name:"Consumer trial recruitment shortfall",phase:"P3",l:3,i:2,delay:7,cost:10000,resp:"ALDI store partnership; incentive budget"},
+{id:"R07",name:"Key personnel unavailability",phase:"ALL",l:2,i:3,delay:10,cost:20000,resp:"Cross-train; document processes; contractor backup"},
+{id:"R08",name:"Supplier fails audit",phase:"P1",l:3,i:3,delay:10,cost:15000,resp:"Qualify ≥3 candidates; pre-screened alternatives"},
+{id:"R09",name:"Laboratory testing delay",phase:"P3",l:4,i:4,delay:14,cost:30000,resp:"Submit 2 weeks early; backup accredited lab"},
+{id:"R10",name:"Regulatory requirement change",phase:"P3",l:1,i:5,delay:30,cost:80000,resp:"Monitor EU regulation pipeline; flexible spec"},
+{id:"R11",name:"Design consultancy scope creep",phase:"P2",l:2,i:2,delay:7,cost:15000,resp:"Fixed-price contract; milestone payments"},
+{id:"R12",name:"IP/patent conflict on formulation",phase:"P2",l:2,i:4,delay:14,cost:40000,resp:"Freedom-to-operate search; IP counsel"},
+{id:"R13",name:"Stakeholder misalignment on spec",phase:"P1",l:2,i:3,delay:7,cost:10000,resp:"Spec sign-off at G1; ALDI sponsor in reviews"},
+{id:"R14",name:"Budget overrun on certification",phase:"P3",l:3,i:3,delay:0,cost:25000,resp:"Pre-negotiate fixed lab fees; earmark contingency"},
+{id:"R15",name:"Handover documentation incomplete",phase:"P4",l:2,i:2,delay:7,cost:10000,resp:"Template-based docs; rolling documentation"},
+];
+
+const CSFS=[
+{csf:"Prototype achieves EN 13432 certification",kpi:"Certification outcome (pass/fail)",target:"Pass on first or second submission",phase:"P3",wp:"3.4"},
+{csf:"Prototype bears 500g under cold chain",kpi:"Load-bearing capacity at 1–8°C",target:"≥500g for 14 days without deformation",phase:"P3",wp:"3.1"},
+{csf:"Project delivered within budget",kpi:"Budget variance (EV analysis)",target:"≤95% of USD 1,450,000 consumed",phase:"ALL",wp:"—"},
+{csf:"Project delivered on schedule",kpi:"Milestone variance at each gate",target:"All 4 gates met within ±2 weeks",phase:"ALL",wp:"—"},
+{csf:"Supply chain viability demonstrated",kpi:"Qualified suppliers count",target:"≥2 suppliers with confirmed capacity",phase:"P1",wp:"1.4"},
+{csf:"Consumer acceptance validated",kpi:"Positive usability rating",target:"≥80% acceptance in trials (n≥50)",phase:"P3",wp:"3.3"},
+{csf:"ALDI accepts handover deliverables",kpi:"Formal written acceptance",target:"Signed acceptance at Gate 4",phase:"P4",wp:"4.3"},
+];
+
+const INIT={
+project:{budget:1450000,cap:1500000,buffer:50000,start:"2026-06-01",end:"2027-01-31"},
+phases:[
+{id:"P1",name:"Material Research & Supplier ID",start:"2026-06-01",end:"2026-07-31",budget:220000,
+ gate:{id:"G1",crit:"Confirmed material shortlist + ≥2 qualified suppliers",date:"2026-07-31"},cd:7,cc:55000,
+ wps:[{id:"1.1",n:"Literature review & benchmarking",dur:"3 wks",b:40000,s:0,st:"not_started",xc:12000,xd:7},
+      {id:"1.2",n:"Technical performance specification",dur:"2 wks",b:55000,s:0,st:"not_started",xc:15000,xd:5},
+      {id:"1.3",n:"Supplier identification & outreach",dur:"3 wks",b:35000,s:0,st:"not_started",xc:10000,xd:7},
+      {id:"1.4",n:"Supplier qualification & auditing",dur:"3 wks",b:60000,s:0,st:"not_started",xc:18000,xd:7},
+      {id:"1.5",n:"Phase 1 project management",dur:"8 wks",b:30000,s:0,st:"not_started",xc:0,xd:0}]},
+{id:"P2",name:"Prototype Design & Fabrication",start:"2026-08-01",end:"2026-09-30",budget:410000,
+ gate:{id:"G2",crit:"≥1 viable prototype bearing 500g without failure",date:"2026-09-30"},cd:14,cc:107000,
+ wps:[{id:"2.1",n:"Packaging design consultancy",dur:"2 wks",b:80000,s:0,st:"not_started",xc:20000,xd:5},
+      {id:"2.2",n:"Seaweed biopolymer processing",dur:"4 wks",b:120000,s:0,st:"not_started",xc:35000,xd:10},
+      {id:"2.3",n:"Net bag prototype fabrication",dur:"6 wks",b:130000,s:0,st:"not_started",xc:40000,xd:14},
+      {id:"2.4",n:"Preliminary structural testing",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7},
+      {id:"2.5",n:"Phase 2 project management",dur:"9 wks",b:35000,s:0,st:"not_started",xc:0,xd:0}]},
+{id:"P3",name:"Performance Testing",start:"2026-10-01",end:"2026-11-30",budget:445000,
+ gate:{id:"G3",crit:"All test results documented + prototype recommendation",date:"2026-11-30"},cd:10,cc:107000,
+ wps:[{id:"3.1",n:"Cold chain simulation testing",dur:"3 wks",b:55000,s:0,st:"not_started",xc:15000,xd:7},
+      {id:"3.2",n:"Shelf-life testing",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7},
+      {id:"3.3",n:"Consumer handling trials",dur:"2 wks",b:35000,s:0,st:"not_started",xc:10000,xd:5},
+      {id:"3.4",n:"EN 13432 compostability cert.",dur:"5 wks",b:195000,s:0,st:"not_started",xc:50000,xd:10},
+      {id:"3.5",n:"ASTM D6400 parallel assessment",dur:"5 wks",b:75000,s:0,st:"not_started",xc:20000,xd:10},
+      {id:"3.6",n:"Phase 3 project management",dur:"9 wks",b:40000,s:0,st:"not_started",xc:0,xd:0}]},
+{id:"P4",name:"Closure & Handover",start:"2026-12-01",end:"2027-01-31",budget:175000,
+ gate:{id:"G4",crit:"Formal written client acceptance — project closed",date:"2027-01-31"},cd:7,cc:40000,
+ wps:[{id:"4.1",n:"Supply chain feasibility report",dur:"3 wks",b:50000,s:0,st:"not_started",xc:15000,xd:7},
+      {id:"4.2",n:"Scale-up roadmap development",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7},
+      {id:"4.3",n:"Handover documentation",dur:"3 wks",b:30000,s:0,st:"not_started",xc:8000,xd:7},
+      {id:"4.4",n:"Lessons learned workshop",dur:"2 wks",b:20000,s:0,st:"not_started",xc:5000,xd:5},
+      {id:"4.5",n:"Phase 4 project management",dur:"9 wks",b:30000,s:0,st:"not_started",xc:0,xd:0}]},
+],
+cross:{budget:200000,items:[
+  {id:"5.1",n:"Steering Committee meetings",b:45000,s:0},
+  {id:"5.2",n:"Online monitoring dashboard",b:30000,s:0},
+  {id:"5.3",n:"Legal & IP advisory",b:40000,s:0},
+  {id:"5.4",n:"QA & independent review",b:25000,s:0},
+  {id:"5.5",n:"Contingency reserve",b:60000,s:0},
+]}};
+
+const SL={not_started:"Not Started",in_progress:"In Progress",completed:"Completed",delayed:"Delayed",at_risk:"At Risk"};
+const SC={not_started:"var(--n)",in_progress:"var(--b)",completed:"var(--g)",delayed:"var(--a)",at_risk:"var(--r)"};
+
+// ═══ HELPERS ═══
+const $=n=>"$"+n.toLocaleString("en-US");
+const hc=r=>r<=.85?"var(--g)":r<=1?"var(--a)":"var(--r)";
+const hl=r=>r<=.85?"On Track":r<=1?"Warning":"Over Budget";
+function tH(p,today){
+  const s=new Date(p.start),e=new Date(p.end),td=(e-s)/864e5,el=(today-s)/864e5;
+  const dn=p.wps.filter(w=>w.st==="completed").length,tot=p.wps.length,pr=tot?dn/tot:0,tr=td?el/td:0;
+  if(el<0)return{c:"var(--n)",l:"Not Started",r:0};
+  if(pr>=1)return{c:"var(--g)",l:"Complete",r:1};
+  if(tr>1&&pr<1)return{c:"var(--r)",l:"Overdue",r:tr};
+  if(pr>=tr-.1)return{c:"var(--g)",l:"On Schedule",r:tr};
+  if(pr>=tr-.3)return{c:"var(--a)",l:"Slightly Behind",r:tr};
+  return{c:"var(--r)",l:"Behind",r:tr};
+}
+const rc=(l,i)=>{const s=l*i;return s>=15?"var(--r)":s>=8?"var(--a)":s>=4?"var(--b)":"var(--g)"};
+const rcBg=(l,i)=>{const s=l*i;return s>=15?"rgba(220,38,38,.25)":s>=8?"rgba(217,119,6,.2)":s>=4?"rgba(37,99,235,.15)":"rgba(22,163,74,.12)"};
+const rcBd=(l,i)=>{const s=l*i;return s>=15?"rgba(220,38,38,.5)":s>=8?"rgba(217,119,6,.4)":s>=4?"rgba(37,99,235,.3)":"rgba(22,163,74,.25)"};
+const rl=(l,i)=>{const s=l*i;return s>=15?"Critical":s>=8?"High":s>=4?"Medium":"Low"};
+const bar=(v,mx,col,h=6)=>`<div class="bar-track" style="height:${h}px"><div class="bar-fill" style="width:${mx?Math.min(v/mx*100,100):0}%;background:${col}"></div></div>`;
+const dot=c=>`<span class="dot" style="background:${c}"></span>`;
+const pill=(c,t)=>{const m={"var(--g)":"rgba(22,163,74,.15)","var(--a)":"rgba(217,119,6,.15)","var(--r)":"rgba(220,38,38,.15)","var(--b)":"rgba(37,99,235,.15)","var(--n)":"rgba(100,116,139,.15)"};return`<span class="pill" style="background:${m[c]||"rgba(100,116,139,.15)"};color:${c}">${t}</span>`};
+const donut=(segs,size=130,sw=20,label="",sub="")=>{
+  const r=(size-sw)/2,circ=2*Math.PI*r,cx=size/2;let acc=0;
+  let circles=`<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="var(--s3)" stroke-width="${sw}"/>`;
+  segs.forEach(s=>{const dl=circ*s.v,dg=circ-dl,off=circ*(1-acc)+circ*.25;acc+=s.v;
+    circles+=`<circle cx="${cx}" cy="${cx}" r="${r}" fill="none" stroke="${s.c}" stroke-width="${sw}" stroke-dasharray="${dl} ${dg}" stroke-dashoffset="${off}" stroke-linecap="round"/>`;
+  });
+  return`<div style="position:relative;width:${size}px;height:${size}px;flex-shrink:0">
+    <svg width="${size}" height="${size}">${circles}</svg>
+    <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center">
+      <div class="mono fw8" style="font-size:${size>80?18:14}px;color:var(--t1)">${label}</div>
+      ${sub?`<div style="font-size:9px;color:var(--t3)">${sub}</div>`:""}
+    </div></div>`;
+};
+
+// ═══ STATE ═══
+let data=JSON.parse(JSON.stringify(INIT));
+try{const s=localStorage.getItem("gn6");if(s)data=JSON.parse(s)}catch{}
+let view="overview";
+
+function save(){try{localStorage.setItem("gn6",JSON.stringify(data))}catch{}}
+function getToday(){return new Date(document.getElementById("simDate").value)}
+
+// ═══ COMPUTED ═══
+function calc(){
+  const today=getToday();
+  const allW=data.phases.flatMap(p=>p.wps);
+  const spent=allW.reduce((s,w)=>s+w.s,0)+data.cross.items.reduce((s,i)=>s+i.s,0);
+  const budget=data.project.budget;
+  const done=allW.filter(w=>w.st==="completed").length;
+  const prog=allW.length?Math.round(done/allW.length*100):0;
+  const ng=data.phases.find(p=>new Date(p.gate.date)>=today);
+  const dtg=ng?Math.ceil((new Date(ng.gate.date)-today)/864e5):null;
+  const cDays=data.phases.reduce((s,p)=>s+(p.cd||0),0);
+  const cCost=data.phases.reduce((s,p)=>s+(p.cc||0),0);
+  const emv=RISKS.reduce((s,r)=>s+(r.l/5)*r.cost,0);
+  const bR=budget?spent/budget:0;
+  return{today,allW,spent,budget,done,prog,ng,dtg,cDays,cCost,emv,bR,bCol:hc(bR),bLbl:hl(bR)};
+}
+
+function csfSt(csf,c){
+  if(csf.wp==="—"){
+    if(csf.kpi.includes("Budget"))return c.bR<=.95?{s:"On Track",c:"var(--g)"}:c.bR<=1?{s:"Warning",c:"var(--a)"}:{s:"Over",c:"var(--r)"};
+    return{s:"On Track",c:"var(--g)"};
+  }
+  const w=c.allW.find(w=>w.id===csf.wp);
+  if(!w)return{s:"—",c:"var(--n)"};
+  return{completed:{s:"Achieved",c:"var(--g)"},in_progress:{s:"In Progress",c:"var(--b)"},delayed:{s:"At Risk",c:"var(--r)"},at_risk:{s:"At Risk",c:"var(--r)"},not_started:{s:"Pending",c:"var(--n)"}}[w.st];
+}
+
+// ═══ RENDER ═══
+function render(){
+  const c=calc();
+  const app=document.getElementById("app");
+
+  // Tabs
+  const tabNames=[["overview","Dashboard"],["phases","Phases"],["budget","Budget"],["csf","CSFs & KPIs"],["risk","Risk Analysis"],["crash","Crash"],["input","Update"]];
+  document.getElementById("tabBar").innerHTML=tabNames.map(([id,l])=>`<button class="tab${view===id?" active":""}" onclick="view='${id}';render()">${l}</button>`).join("");
+
+  let h="";
+
+  if(view==="overview"){
+    // KPIs
+    h+=`<div class="grid g6 mb20">`;
+    [[`${c.prog}%`,"Overall Progress",`${c.done} of ${c.allW.length} WPs`,c.prog>=80?"var(--g)":c.prog>=50?"var(--a)":"var(--b)",bar(c.prog,100,c.prog>=80?"var(--g)":"var(--b)")],
+     [$(c.spent),"Budget Consumed",`of ${$(c.budget)}`,c.bCol,bar(c.spent,c.budget,c.bCol)],
+     [c.ng?c.ng.gate.id:"—","Next Milestone",c.ng?`${c.dtg} days remaining`:"All passed",c.dtg!==null&&c.dtg<14?"var(--a)":"var(--g)",""],
+     [$(Math.round(c.emv)),"Risk Exposure (EMV)",`${RISKS.filter(r=>r.l*r.i>=8).length} high/critical`,"var(--a)",""],
+     [`${c.cDays}d available`,"Crash Reserve",`${$(c.cCost)} if activated`,"var(--b)",""],
+     [$(c.budget-c.spent),"Remaining",`Buffer: ${$(data.project.buffer)}`,c.budget-c.spent>0?"var(--g)":"var(--r)",""],
+    ].forEach(([v,l,s,col,b])=>{
+      h+=`<div class="card kpi-card" style="border-top-color:${col}"><div class="lbl">${l}</div><div class="val mono" style="color:${col}">${v}</div>${b?`<div style="margin-top:6px">${b}</div>`:""}<div class="sub">${s}</div></div>`;
+    });
+    h+=`</div>`;
+
+    // Donuts
+    const sc={completed:0,in_progress:0,not_started:0,delayed:0,at_risk:0};c.allW.forEach(w=>{sc[w.st]++});const t=c.allW.length;
+    const tw=data.phases[2].wps.filter(w=>!w.id.endsWith(".6")),td=tw.filter(w=>w.st==="completed").length,tip=tw.filter(w=>w.st==="in_progress").length;
+    const pw=data.phases[1].wps.filter(w=>!w.id.endsWith(".5")),pd=pw.filter(w=>w.st==="completed").length,pip=pw.filter(w=>w.st==="in_progress").length;
+
+    h+=`<div class="grid g4 mb20">`;
+    // WP Status
+    const wSegs=[{v:sc.completed/t,c:"var(--g)"},{v:sc.in_progress/t,c:"var(--b)"},{v:sc.delayed/t,c:"var(--a)"},{v:sc.at_risk/t,c:"var(--r)"},{v:sc.not_started/t,c:"var(--s3)"}].filter(s=>s.v>0);
+    h+=`<div class="card flex" style="gap:16px">${donut(wSegs,130,20,sc.completed,`of ${t} WPs`)}<div><div class="f13 fw7" style="margin-bottom:6px">WP Status</div>`;
+    [["Completed",sc.completed,"var(--g)"],["In Progress",sc.in_progress,"var(--b)"],["Delayed",sc.delayed,"var(--a)"],["At Risk",sc.at_risk,"var(--r)"],["Not Started",sc.not_started,"var(--n)"]].filter(x=>x[1]>0).forEach(([l,v,cl])=>{
+      h+=`<div class="flex f11" style="margin-bottom:2px">${dot(cl)}<span style="color:var(--t2)">${l}</span><span class="mono fw7" style="margin-left:auto;color:${cl}">${v}</span></div>`;
+    });
+    h+=`</div></div>`;
+
+    // Budget allocation
+    const bSegs=data.phases.map((p,i)=>({v:p.budget/c.budget,c:["var(--g)","var(--b)","var(--a)","var(--n)"][i]})).concat([{v:data.cross.budget/c.budget,c:"var(--s3)"}]);
+    h+=`<div class="card flex" style="gap:16px">${donut(bSegs,130,20,`$${(c.budget/1e3).toFixed(0)}k`,"Budget")}<div><div class="f13 fw7" style="margin-bottom:6px">Allocation</div>`;
+    data.phases.forEach((p,i)=>{h+=`<div class="flex f11" style="margin-bottom:2px">${dot(["var(--g)","var(--b)","var(--a)","var(--n)"][i])}<span style="color:var(--t2)">${p.id}</span><span class="mono fw7" style="margin-left:auto">$${(p.budget/1e3).toFixed(0)}k</span></div>`});
+    h+=`<div class="flex f11">${dot("var(--s3)")}<span style="color:var(--t2)">Cross</span><span class="mono fw7" style="margin-left:auto">$${(data.cross.budget/1e3).toFixed(0)}k</span></div></div></div>`;
+
+    // Prototype
+    const prSegs=pd+pip>0?[{v:pd/pw.length,c:"var(--g)"},{v:pip/pw.length,c:"var(--b)"},{v:(pw.length-pd-pip)/pw.length,c:"var(--s3)"}].filter(s=>s.v>0):[{v:1,c:"var(--s3)"}];
+    h+=`<div class="card flex" style="gap:16px">${donut(prSegs,130,20,`${pd}/${pw.length}`,"Prototype")}<div><div class="f13 fw7" style="margin-bottom:6px">Prototype</div>`;
+    [["Done",pd,"var(--g)"],["Active",pip,"var(--b)"],["Pending",pw.length-pd-pip,"var(--n)"]].filter(x=>x[1]>0).forEach(([l,v,cl])=>{
+      h+=`<div class="flex f11" style="margin-bottom:2px">${dot(cl)}<span style="color:var(--t2)">${l}</span><span class="mono fw7" style="margin-left:auto;color:${cl}">${v}</span></div>`;
+    });
+    h+=`</div></div>`;
+
+    // Testing
+    const tSegs=td+tip>0?[{v:td/tw.length,c:"var(--g)"},{v:tip/tw.length,c:"var(--a)"},{v:(tw.length-td-tip)/tw.length,c:"var(--s3)"}].filter(s=>s.v>0):[{v:1,c:"var(--s3)"}];
+    h+=`<div class="card flex" style="gap:16px">${donut(tSegs,130,20,`${td}/${tw.length}`,"Tests")}<div><div class="f13 fw7" style="margin-bottom:6px">Testing</div>`;
+    [["Passed",td,"var(--g)"],["Running",tip,"var(--a)"],["Pending",tw.length-td-tip,"var(--n)"]].filter(x=>x[1]>0).forEach(([l,v,cl])=>{
+      h+=`<div class="flex f11" style="margin-bottom:2px">${dot(cl)}<span style="color:var(--t2)">${l}</span><span class="mono fw7" style="margin-left:auto;color:${cl}">${v}</span></div>`;
+    });
+    h+=`</div></div></div>`;
+
+    // Phase cards
+    h+=`<div class="f15 fw7 mb12">Phase Overview</div><div class="grid g4">`;
+    data.phases.forEach(p=>{
+      const ps=p.wps.reduce((a,w)=>a+w.s,0),br=p.budget?ps/p.budget:0,bc=hc(br),th=tH(p,c.today);
+      const dn=p.wps.filter(w=>w.st==="completed").length,ip=p.wps.filter(w=>w.st==="in_progress").length,dl=p.wps.filter(w=>w.st==="delayed"||w.st==="at_risk").length,ns=p.wps.length-dn-ip-dl;
+      h+=`<div class="card" style="border-left:4px solid ${bc}">
+        <div class="flex-between mb12"><div><div class="f11 fw7 mono" style="color:var(--b)">${p.id}</div><div class="f14 fw7">${p.name}</div></div>
+        <div class="tr"><div class="f11" style="color:var(--t3)">${p.gate.id}</div><div class="f11 fw7" style="color:var(--a)">${p.gate.date.slice(5)}</div></div></div>
+        <div class="mb12"><div class="flex-between f11" style="margin-bottom:3px"><span>${dot(bc)}Budget</span><span class="mono" style="color:${bc}">${$(ps)} / ${$(p.budget)}</span></div>${bar(ps,p.budget,bc)}</div>
+        <div style="margin-bottom:10px"><div class="flex-between f11" style="margin-bottom:3px"><span>${dot(th.c)}Schedule</span><span style="color:${th.c}">${th.l}</span></div>${bar(Math.min(th.r,1)*100,100,th.c)}</div>
+        <div class="flex" style="gap:6px">${dn?pill("var(--g)",`✓ ${dn}`):""}${ip?pill("var(--b)",`● ${ip}`):""}${dl?pill("var(--r)",`▲ ${dl}`):""}${ns?pill("var(--n)",`○ ${ns}`):""}</div></div>`;
+    });
+    h+=`</div>`;
+    if(c.ng){h+=`<div class="card" style="margin-top:16px;border-left:4px solid var(--a)"><div class="f14 fw7" style="color:var(--a)">★ Next Gate: ${c.ng.gate.id}</div><div class="f13" style="color:var(--t2)">${c.ng.gate.crit}</div><div class="f12" style="margin-top:4px">Due: <strong>${c.ng.gate.date}</strong> · <span class="fw7" style="color:${c.dtg<14?"var(--a)":"var(--g)"}">${c.dtg} days</span></div></div>`}
+  }
+
+  else if(view==="phases"){
+    data.phases.forEach((p,pi)=>{
+      const ps=p.wps.reduce((a,w)=>a+w.s,0);
+      h+=`<div class="mb24"><div class="phase-hdr"><span class="fw7">${p.id} — ${p.name}</span><span class="mono f13">${$(ps)} / ${$(p.budget)}</span></div>
+      <div class="card" style="border-radius:0 0 10px 10px;border-top:none;padding:0;overflow:hidden"><table><thead><tr><th>WBS</th><th class="left">Work Package</th><th>Dur</th><th>Budget</th><th>Spent</th><th>Status</th><th>Crash</th></tr></thead><tbody>`;
+      p.wps.forEach(w=>{const sr=w.b?w.s/w.b:0;
+        h+=`<tr><td class="mono fw7" style="color:var(--b)">${w.id}</td><td class="left">${w.n}</td><td>${w.dur}</td><td class="mono">${$(w.b)}</td><td class="mono" style="color:${hc(sr)}">${$(w.s)}</td><td>${pill(SC[w.st],SL[w.st])}</td><td class="mono" style="font-size:10px;color:var(--t3)">${w.xc?`+${$(w.xc)} → -${w.xd}d`:"—"}</td></tr>`;
+      });
+      h+=`</tbody></table></div><div class="gate-bar"><span class="fw7" style="color:var(--a)">★ ${p.gate.id}</span><span style="color:var(--t2)">${p.gate.crit}</span><span class="fw7" style="color:var(--a)">${p.gate.date}</span></div></div>`;
+    });
+  }
+
+  else if(view==="budget"){
+    h+=`<div class="grid g5 mb20">`;
+    [[$(c.budget),"Working Budget","var(--b)"],[$(c.spent),"Total Spent",c.bCol],[$(c.budget-c.spent),"Remaining",c.budget-c.spent>0?"var(--g)":"var(--r)"],[$(data.project.buffer),"Buffer","var(--a)"],[$(data.project.cap),"Cap","var(--n)"]].forEach(([v,l,col])=>{
+      h+=`<div class="card-sm"><div class="lbl">${l}</div><div class="val-sm mono" style="color:${col}">${v}</div></div>`;
+    });
+    h+=`</div><div class="f15 fw7 mb12">Budget by Phase</div>`;
+    data.phases.forEach(p=>{const ps=p.wps.reduce((a,w)=>a+w.s,0),r=p.budget?ps/p.budget:0,col=hc(r);
+      h+=`<div class="flex mb12" style="gap:14px"><div style="width:200px;text-align:right;font-size:13px;font-weight:700">${p.name}</div>
+      <div style="flex:1;position:relative"><div style="background:var(--s3);border-radius:6px;height:28px;overflow:hidden"><div style="width:${Math.min(r*100,100)}%;height:100%;background:${col};border-radius:6px;display:flex;align-items:center;padding-left:10px;font-size:11px;font-weight:700;color:#fff;transition:width .6s">${Math.round(r*100)}%</div></div>
+      <div class="mono" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);font-size:11px;color:var(--t2)">${$(ps)} / ${$(p.budget)}</div></div></div>`;
+    });
+  }
+
+  else if(view==="csf"){
+    h+=`<div class="f15 fw7">Critical Success Factors & KPIs</div><div class="f12 mb20" style="color:var(--t2)">Status auto-calculated from WP progress. Linked to project objectives.</div>`;
+    h+=`<div class="grid g5 mb20">`;
+    const counts={Achieved:0,"In Progress":0,"On Track":0,Warning:0,"At Risk":0,Over:0,Pending:0};
+    CSFS.forEach(csf=>{const st=csfSt(csf,c);counts[st.s]=(counts[st.s]||0)+1});
+    [["Total CSFs",CSFS.length,"var(--b)"],["Achieved",counts.Achieved,"var(--g)"],["In Progress",(counts["In Progress"]||0)+(counts["On Track"]||0),"var(--b)"],["At Risk",(counts["At Risk"]||0)+(counts.Warning||0),"var(--a)"],["Pending",counts.Pending||0,"var(--n)"]].forEach(([l,v,col])=>{
+      h+=`<div class="card-sm" style="border-top:3px solid ${col}"><div class="lbl">${l}</div><div class="val-sm mono" style="color:${col}">${v}</div></div>`;
+    });
+    h+=`</div>`;
+
+    h+=`<div class="card mb24" style="padding:0;overflow:hidden"><table><thead><tr><th class="left">Critical Success Factor</th><th class="left">KPI</th><th class="left">Target</th><th>Phase</th><th>WP</th><th>Status</th></tr></thead><tbody>`;
+    CSFS.forEach(csf=>{const st=csfSt(csf,c);
+      h+=`<tr><td class="left fw7">${csf.csf}</td><td class="left" style="color:var(--t2)">${csf.kpi}</td><td class="left">${csf.target}</td><td class="mono f11">${csf.phase}</td><td class="mono" style="color:var(--b)">${csf.wp}</td><td>${pill(st.c,st.s)}</td></tr>`;
+    });
+    h+=`</tbody></table></div>`;
+
+    h+=`<div class="f14 fw7 mb12">CSF Achievement</div><div class="grid g4">`;
+    CSFS.forEach(csf=>{const st=csfSt(csf,c);const pv=st.s==="Achieved"?1:st.s==="In Progress"||st.s==="On Track"?.5:st.s==="At Risk"||st.s==="Warning"?.3:0;
+      h+=`<div class="card flex" style="gap:12px">${donut([{v:pv,c:st.c},{v:1-pv,c:"var(--s3)"}],52,7,"","")}<div><div class="f12 fw7" style="line-height:1.3">${csf.csf}</div><div class="f11 fw7" style="color:${st.c};margin-top:2px">${st.s}</div></div></div>`;
+    });
+    h+=`</div>`;
+  }
+
+  else if(view==="risk"){
+    h+=`<div class="f15 fw7">Risk & Uncertainty Analysis</div><div class="f12 mb20" style="color:var(--t2)">PMI framework. 15 risks. EMV justifies contingency & crash.</div>`;
+    h+=`<div class="grid g6 mb24">`;
+    [["Risks",RISKS.length,"var(--b)"],["Critical/High",RISKS.filter(r=>r.l*r.i>=8).length,"var(--r)"],["EMV",$(Math.round(c.emv)),"var(--a)"],["Max Delay",Math.max(...RISKS.map(r=>r.delay))+"d","var(--r)"],["Contingency",$(60000),"var(--g)"],["Crash Budget",$(c.cCost),"var(--b)"]].forEach(([l,v,col])=>{
+      h+=`<div class="card-sm"><div class="lbl">${l}</div><div class="val-sm mono" style="color:${col}">${v}</div></div>`;
+    });
+    h+=`</div>`;
+
+    // 5x5 matrix
+    h+=`<div class="f14 fw7 mb12">Probability × Impact Matrix</div><div class="card mb24" style="overflow-x:auto"><div style="display:grid;grid-template-columns:60px repeat(5,1fr);gap:3px;min-width:420px"><div></div>`;
+    for(let i=1;i<=5;i++)h+=`<div class="f11 tc fw7" style="color:var(--t3);padding:4px">I${i}</div>`;
+    for(let l=5;l>=1;l--){
+      h+=`<div class="f11 fw7" style="color:var(--t3);display:flex;align-items:center;justify-content:center">L${l}</div>`;
+      for(let i=1;i<=5;i++){const rh=RISKS.filter(r=>r.l===l&&r.i===i),bg=rc(l,i);
+        h+=`<div class="risk-cell" style="background:${rcBg(l,i)};border:1px solid ${rcBd(l,i)}">${rh.length?rh.map(r=>`<span class="mono fw7" style="font-size:9px;color:${bg}">${r.id}</span>`).join(""):`<span style="font-size:9px;color:var(--s3)">—</span>`}</div>`;
+      }
+    }
+    h+=`</div><div class="flex f11" style="gap:14px;margin-top:10px">`;
+    [["var(--g)","Low"],["var(--b)","Medium"],["var(--a)","High"],["var(--r)","Critical"]].forEach(([c,l])=>{h+=`<span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${c};margin-right:4px"></span>${l}</span>`});
+    h+=`</div></div>`;
+
+    // Register
+    h+=`<div class="f14 fw7 mb12">Risk Register</div><div class="card mb24" style="padding:0;overflow:hidden"><div style="overflow-x:auto"><table style="min-width:900px"><thead><tr><th>ID</th><th class="left">Risk</th><th>Phase</th><th>L</th><th>I</th><th>Score</th><th>Rating</th><th>Delay</th><th>Cost</th><th>EMV</th><th class="left">Response</th></tr></thead><tbody>`;
+    [...RISKS].sort((a,b)=>(b.l*b.i)-(a.l*a.i)).forEach(r=>{const s=r.l*r.i,co=rc(r.l,r.i),e=(r.l/5)*r.cost;
+      h+=`<tr><td class="mono fw7" style="color:${co}">${r.id}</td><td class="left fw7">${r.name}</td><td class="f11">${r.phase}</td><td>${r.l}</td><td>${r.i}</td><td class="fw7" style="color:${co}">${s}</td><td>${pill(co,rl(r.l,r.i))}</td><td class="mono" style="color:${r.delay?"var(--r)":"var(--n)"}">+${r.delay}d</td><td class="mono">${$(r.cost)}</td><td class="mono" style="color:var(--a)">${$(Math.round(e))}</td><td class="left f11" style="color:var(--t2);max-width:220px">${r.resp}</td></tr>`;
+    });
+    h+=`<tr style="border-top:2px solid var(--b)"><td colspan="9" class="tr fw7" style="color:var(--t3)">Total EMV →</td><td class="mono fw7 f14" style="color:var(--a)">${$(Math.round(c.emv))}</td><td></td></tr></tbody></table></div></div>`;
+
+    // Delay scenario
+    h+=`<div class="f14 fw7 mb12">Delay Scenario vs. Crash</div><div class="card mb24" style="padding:0;overflow:hidden"><table><thead><tr><th class="left">Phase</th><th>Planned</th><th>Worst Delay</th><th>Delay Cost</th><th>Crash Avail</th><th>Crash Cost</th><th>Net</th><th>Verdict</th></tr></thead><tbody>`;
+    data.phases.forEach(p=>{const pr=RISKS.filter(r=>r.phase===p.id||r.phase==="ALL"),wd=pr.reduce((m,r)=>Math.max(m,r.delay),0),dc=pr.reduce((s,r)=>s+r.cost,0);
+      const nd=Math.max(0,wd-(p.cd||0)),pd=Math.round((new Date(p.end)-new Date(p.start))/864e5);
+      const vc=nd===0?"var(--g)":nd<=7?"var(--a)":"var(--r)",vl=nd===0?"Recoverable":nd<=7?"Manageable":"Escalate";
+      h+=`<tr><td class="left fw7">${p.id} — ${p.name}</td><td class="mono">${pd}d</td><td class="mono" style="color:var(--r)">+${wd}d</td><td class="mono">${$(dc)}</td><td class="mono" style="color:var(--g)">-${p.cd}d</td><td class="mono" style="color:var(--b)">${$(p.cc)}</td><td class="mono fw7" style="color:${nd===0?"var(--g)":"var(--r)"}">${nd===0?"0d ✓":`+${nd}d`}</td><td>${pill(vc,vl)}</td></tr>`;
+    });
+    h+=`</tbody></table></div>`;
+    h+=`<div class="card" style="border-left:4px solid var(--b)"><div class="f14 fw7" style="color:var(--b)">⚡ Crash Cost Justification</div><div class="f12" style="color:var(--t2);line-height:1.7;margin-top:6px">Crash allocation of <strong style="color:var(--t1)">${$(c.cCost)}</strong> justified by EMV of <strong style="color:var(--a)">${$(Math.round(c.emv))}</strong>. Recovers up to <strong style="color:var(--t1)">${c.cDays} critical-path days</strong>. Combined with <strong style="color:var(--t1)">${$(60000)}</strong> contingency + <strong style="color:var(--t1)">${$(data.project.buffer)}</strong> buffer = delivery within <strong style="color:var(--t1)">${$(data.project.cap)}</strong> cap.</div></div>`;
+  }
+
+  else if(view==="crash"){
+    h+=`<div class="f15 fw7">Crash Analysis</div><div class="f12 mb16" style="color:var(--t2)">Critical-path options. Parallel tasks not double-counted.</div>`;
+    h+=`<div class="grid g3 mb20">`;
+    [["Crash Cost",$(c.cCost),"var(--b)"],["Days Saveable",c.cDays+"d","var(--g)"],["Contingency",$(60000-(data.cross.items.find(i=>i.id==="5.5")?.s||0)),"var(--a)"]].forEach(([l,v,col])=>{
+      h+=`<div class="card-sm"><div class="lbl">${l}</div><div class="val-sm mono" style="color:${col}">${v}</div></div>`;
+    });
+    h+=`</div>`;
+    data.phases.forEach(p=>{const cr=p.wps.filter(w=>w.st!=="completed"&&w.xc>0);if(!cr.length)return;
+      h+=`<div class="mb16"><div class="flex-between mb12"><span class="fw7">${p.id} — ${p.name}</span><span class="f11" style="color:var(--t2)">Critical path: <strong style="color:var(--g)">-${p.cd}d</strong> for <strong style="color:var(--b)">${$(p.cc)}</strong></span></div>
+      <div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>WBS</th><th class="left">Work Package</th><th>Normal</th><th>Crash Cost</th><th>Days Saved</th><th>$/Day</th></tr></thead><tbody>`;
+      cr.forEach(w=>{h+=`<tr><td class="mono" style="color:var(--b)">${w.id}</td><td class="left">${w.n}</td><td>${w.dur}</td><td class="mono" style="color:var(--b)">+${$(w.xc)}</td><td class="fw7" style="color:var(--g)">${w.xd}d</td><td class="mono" style="color:var(--t3)">${w.xd?$(Math.round(w.xc/w.xd)):"—"}</td></tr>`});
+      h+=`</tbody></table></div></div>`;
+    });
+  }
+
+  else if(view==="input"){
+    h+=`<div class="flex-between mb16"><div class="f15 fw7">Update Project Data</div><button onclick="data=JSON.parse(JSON.stringify(INIT));save();render()" style="background:rgba(220,38,38,.1);color:var(--r);border:1px solid rgba(220,38,38,.4);border-radius:8px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">Reset</button></div>`;
+    data.phases.forEach((p,pi)=>{
+      h+=`<div class="mb20"><div class="f13 fw7 mb12">${p.id} — ${p.name}</div>`;
+      p.wps.forEach((w,wi)=>{
+        h+=`<div style="display:grid;grid-template-columns:60px 1fr 120px 100px 140px;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px">
+          <span class="mono fw7" style="color:var(--b)">${w.id}</span>
+          <span style="color:var(--t2)">${w.n}</span>
+          <input type="number" value="${w.s}" min="0" step="1000" onchange="data.phases[${pi}].wps[${wi}].s=+this.value||0;save();render()">
+          <span class="f11" style="color:var(--t3)">/ ${$(w.b)}</span>
+          <select onchange="data.phases[${pi}].wps[${wi}].st=this.value;save();render()">
+            ${Object.entries(SL).map(([k,v])=>`<option value="${k}"${w.st===k?" selected":""}>${v}</option>`).join("")}
+          </select></div>`;
+      });
+      h+=`</div>`;
+    });
+    h+=`<div class="f13 fw7 mb12" style="margin-top:20px">Cross-Phase</div>`;
+    data.cross.items.forEach((it,i)=>{
+      h+=`<div style="display:grid;grid-template-columns:60px 1fr 120px 100px;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px">
+        <span class="mono" style="color:var(--b)">${it.id}</span><span style="color:var(--t2)">${it.n}</span>
+        <input type="number" value="${it.s}" min="0" step="1000" onchange="data.cross.items[${i}].s=+this.value||0;save();render()">
+        <span class="f11" style="color:var(--t3)">/ ${$(it.b)}</span></div>`;
+    });
+  }
+
+  app.innerHTML=h;
+}
+
+document.getElementById("simDate").addEventListener("change",render);
+render();
+</script>
+</body>
+</html>
