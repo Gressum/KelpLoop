@@ -7,22 +7,22 @@
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-:root{--bg:#0a0f1a;--s1:#111827;--s2:#1a2235;--s3:#1e293b;--bd:#2a3550;--t1:#e2e8f0;--t2:#8896b0;--t3:#64748b;--g:#16a34a;--a:#d97706;--r:#dc2626;--b:#2563eb;--n:#64748b}
+:root{--bg:#f8f9fb;--s1:#ffffff;--s2:#f1f5f9;--s3:#e2e8f0;--bd:#d1d5db;--t1:#1e293b;--t2:#64748b;--t3:#94a3b8;--g:#16a34a;--a:#d97706;--r:#dc2626;--b:#2563eb;--n:#64748b}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--t1);min-height:100vh}
 .mono{font-family:'JetBrains Mono',monospace}
 .header{background:var(--s1);border-bottom:1px solid var(--bd);padding:14px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .logo{width:36px;height:36px;border-radius:10px;background:linear-gradient(135deg,var(--g),var(--b));display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:#fff}
 .tabs{display:flex;background:var(--s2);border-radius:8px;padding:3px;flex-wrap:wrap}
 .tab{padding:6px 12px;border-radius:6px;border:none;cursor:pointer;font-size:11px;font-weight:600;background:transparent;color:var(--t2);transition:all .15s;font-family:inherit}
-.tab.active{background:var(--t1);color:var(--bg)}
+.tab.active{background:#1e293b;color:#fff}
 .content{padding:20px 24px;max-width:1400px;margin:0 auto}
 .grid{display:grid;gap:12px}
 .g6{grid-template-columns:repeat(auto-fit,minmax(190px,1fr))}
 .g4{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
 .g3{grid-template-columns:repeat(3,1fr)}
 .g5{grid-template-columns:repeat(auto-fit,minmax(140px,1fr))}
-.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px}
-.card-sm{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:16px;box-shadow:0 1px 3px rgba(0,0,0,.06)}
+.card-sm{background:var(--s1);border:1px solid var(--bd);border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.06)}
 .kpi-card{border-top:3px solid var(--b)}
 .lbl{font-size:11px;color:var(--t3);margin-bottom:4px}
 .val{font-size:20px;font-weight:800}
@@ -108,33 +108,33 @@ project:{budget:1450000,cap:1500000,buffer:50000,start:"2026-06-01",end:"2027-01
 phases:[
 {id:"P1",name:"Material Research & Supplier ID",start:"2026-06-01",end:"2026-07-31",budget:220000,
  gate:{id:"G1",crit:"Confirmed material shortlist + ≥2 qualified suppliers",date:"2026-07-31"},cd:7,cc:55000,
- wps:[{id:"1.1",n:"Literature review & benchmarking",dur:"3 wks",b:40000,s:0,st:"not_started",xc:12000,xd:7},
-      {id:"1.2",n:"Technical performance specification",dur:"2 wks",b:55000,s:0,st:"not_started",xc:15000,xd:5},
-      {id:"1.3",n:"Supplier identification & outreach",dur:"3 wks",b:35000,s:0,st:"not_started",xc:10000,xd:7},
-      {id:"1.4",n:"Supplier qualification & auditing",dur:"3 wks",b:60000,s:0,st:"not_started",xc:18000,xd:7},
-      {id:"1.5",n:"Phase 1 project management",dur:"8 wks",b:30000,s:0,st:"not_started",xc:0,xd:0}]},
+ wps:[{id:"1.1",n:"Literature review & benchmarking",dur:"3 wks",b:40000,s:0,st:"not_started",xc:12000,xd:7,or:""},
+      {id:"1.2",n:"Technical performance specification",dur:"2 wks",b:55000,s:0,st:"not_started",xc:15000,xd:5,or:""},
+      {id:"1.3",n:"Supplier identification & outreach",dur:"3 wks",b:35000,s:0,st:"not_started",xc:10000,xd:7,or:""},
+      {id:"1.4",n:"Supplier qualification & auditing",dur:"3 wks",b:60000,s:0,st:"not_started",xc:18000,xd:7,or:""},
+      {id:"1.5",n:"Phase 1 project management",dur:"8 wks",b:30000,s:0,st:"not_started",xc:0,xd:0,or:""}]},
 {id:"P2",name:"Prototype Design & Fabrication",start:"2026-08-01",end:"2026-09-30",budget:410000,
  gate:{id:"G2",crit:"≥1 viable prototype bearing 500g without failure",date:"2026-09-30"},cd:14,cc:107000,
- wps:[{id:"2.1",n:"Packaging design consultancy",dur:"2 wks",b:80000,s:0,st:"not_started",xc:20000,xd:5},
-      {id:"2.2",n:"Seaweed biopolymer processing",dur:"4 wks",b:120000,s:0,st:"not_started",xc:35000,xd:10},
-      {id:"2.3",n:"Net bag prototype fabrication",dur:"6 wks",b:130000,s:0,st:"not_started",xc:40000,xd:14},
-      {id:"2.4",n:"Preliminary structural testing",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7},
-      {id:"2.5",n:"Phase 2 project management",dur:"9 wks",b:35000,s:0,st:"not_started",xc:0,xd:0}]},
+ wps:[{id:"2.1",n:"Packaging design consultancy",dur:"2 wks",b:80000,s:0,st:"not_started",xc:20000,xd:5,or:""},
+      {id:"2.2",n:"Seaweed biopolymer processing",dur:"4 wks",b:120000,s:0,st:"not_started",xc:35000,xd:10,or:""},
+      {id:"2.3",n:"Net bag prototype fabrication",dur:"6 wks",b:130000,s:0,st:"not_started",xc:40000,xd:14,or:""},
+      {id:"2.4",n:"Preliminary structural testing",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7,or:""},
+      {id:"2.5",n:"Phase 2 project management",dur:"9 wks",b:35000,s:0,st:"not_started",xc:0,xd:0,or:""}]},
 {id:"P3",name:"Performance Testing",start:"2026-10-01",end:"2026-11-30",budget:445000,
  gate:{id:"G3",crit:"All test results documented + prototype recommendation",date:"2026-11-30"},cd:10,cc:107000,
- wps:[{id:"3.1",n:"Cold chain simulation testing",dur:"3 wks",b:55000,s:0,st:"not_started",xc:15000,xd:7},
-      {id:"3.2",n:"Shelf-life testing",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7},
-      {id:"3.3",n:"Consumer handling trials",dur:"2 wks",b:35000,s:0,st:"not_started",xc:10000,xd:5},
-      {id:"3.4",n:"EN 13432 compostability cert.",dur:"5 wks",b:195000,s:0,st:"not_started",xc:50000,xd:10},
-      {id:"3.5",n:"ASTM D6400 parallel assessment",dur:"5 wks",b:75000,s:0,st:"not_started",xc:20000,xd:10},
-      {id:"3.6",n:"Phase 3 project management",dur:"9 wks",b:40000,s:0,st:"not_started",xc:0,xd:0}]},
+ wps:[{id:"3.1",n:"Cold chain simulation testing",dur:"3 wks",b:55000,s:0,st:"not_started",xc:15000,xd:7,or:""},
+      {id:"3.2",n:"Shelf-life testing",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7,or:""},
+      {id:"3.3",n:"Consumer handling trials",dur:"2 wks",b:35000,s:0,st:"not_started",xc:10000,xd:5,or:""},
+      {id:"3.4",n:"EN 13432 compostability cert.",dur:"5 wks",b:195000,s:0,st:"not_started",xc:50000,xd:10,or:""},
+      {id:"3.5",n:"ASTM D6400 parallel assessment",dur:"5 wks",b:75000,s:0,st:"not_started",xc:20000,xd:10,or:""},
+      {id:"3.6",n:"Phase 3 project management",dur:"9 wks",b:40000,s:0,st:"not_started",xc:0,xd:0,or:""}]},
 {id:"P4",name:"Closure & Handover",start:"2026-12-01",end:"2027-01-31",budget:175000,
  gate:{id:"G4",crit:"Formal written client acceptance — project closed",date:"2027-01-31"},cd:7,cc:40000,
- wps:[{id:"4.1",n:"Supply chain feasibility report",dur:"3 wks",b:50000,s:0,st:"not_started",xc:15000,xd:7},
-      {id:"4.2",n:"Scale-up roadmap development",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7},
-      {id:"4.3",n:"Handover documentation",dur:"3 wks",b:30000,s:0,st:"not_started",xc:8000,xd:7},
-      {id:"4.4",n:"Lessons learned workshop",dur:"2 wks",b:20000,s:0,st:"not_started",xc:5000,xd:5},
-      {id:"4.5",n:"Phase 4 project management",dur:"9 wks",b:30000,s:0,st:"not_started",xc:0,xd:0}]},
+ wps:[{id:"4.1",n:"Supply chain feasibility report",dur:"3 wks",b:50000,s:0,st:"not_started",xc:15000,xd:7,or:""},
+      {id:"4.2",n:"Scale-up roadmap development",dur:"3 wks",b:45000,s:0,st:"not_started",xc:12000,xd:7,or:""},
+      {id:"4.3",n:"Handover documentation",dur:"3 wks",b:30000,s:0,st:"not_started",xc:8000,xd:7,or:""},
+      {id:"4.4",n:"Lessons learned workshop",dur:"2 wks",b:20000,s:0,st:"not_started",xc:5000,xd:5,or:""},
+      {id:"4.5",n:"Phase 4 project management",dur:"9 wks",b:30000,s:0,st:"not_started",xc:0,xd:0,or:""}]},
 ],
 cross:{budget:200000,items:[
   {id:"5.1",n:"Steering Committee meetings",b:45000,s:0},
@@ -223,7 +223,7 @@ function render(){
   const app=document.getElementById("app");
 
   // Tabs
-  const tabNames=[["overview","Dashboard"],["phases","Phases"],["budget","Budget"],["csf","CSFs & KPIs"],["risk","Risk Analysis"],["crash","Crash"],["input","Update"]];
+  const tabNames=[["overview","Dashboard"],["phases","Phases"],["budget","Budget"],["csf","CSFs & KPIs"],["risk","Risk Analysis"],["crash","Crash"],["input","Update"],["guide","Guide"]];
   document.getElementById("tabBar").innerHTML=tabNames.map(([id,l])=>`<button class="tab${view===id?" active":""}" onclick="view='${id}';render()">${l}</button>`).join("");
 
   let h="";
@@ -398,27 +398,110 @@ function render(){
 
   else if(view==="input"){
     h+=`<div class="flex-between mb16"><div class="f15 fw7">Update Project Data</div><button onclick="data=JSON.parse(JSON.stringify(INIT));save();render()" style="background:rgba(220,38,38,.1);color:var(--r);border:1px solid rgba(220,38,38,.4);border-radius:8px;padding:6px 14px;font-size:11px;font-weight:600;cursor:pointer;font-family:inherit">Reset</button></div>`;
+    h+=`<div class="card mb20" style="border-left:4px solid var(--b)"><div class="f12" style="color:var(--t2);line-height:1.6">
+      <strong style="color:var(--t1)">How to update:</strong> Enter actual cost spent per work package and change status. If a completed WP is over budget, select the reason — <strong>Crashed</strong> (deliberate schedule compression) or <strong>Overspend</strong> (unplanned cost increase). This distinction is tracked in the dashboard analytics.</div></div>`;
     data.phases.forEach((p,pi)=>{
       h+=`<div class="mb20"><div class="f13 fw7 mb12">${p.id} — ${p.name}</div>`;
       p.wps.forEach((w,wi)=>{
-        h+=`<div style="display:grid;grid-template-columns:60px 1fr 120px 100px 140px;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px">
+        const isOver=w.s>w.b;
+        const showReason=isOver&&(w.st==="completed"||w.st==="in_progress");
+        h+=`<div style="display:grid;grid-template-columns:50px 1fr 110px 80px 130px${showReason?" 130px":""};gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--s3);font-size:12px;${isOver?"background:rgba(220,38,38,.04)":""}">
           <span class="mono fw7" style="color:var(--b)">${w.id}</span>
           <span style="color:var(--t2)">${w.n}</span>
           <input type="number" value="${w.s}" min="0" step="1000" onchange="data.phases[${pi}].wps[${wi}].s=+this.value||0;save();render()">
           <span class="f11" style="color:var(--t3)">/ ${$(w.b)}</span>
           <select onchange="data.phases[${pi}].wps[${wi}].st=this.value;save();render()">
             ${Object.entries(SL).map(([k,v])=>`<option value="${k}"${w.st===k?" selected":""}>${v}</option>`).join("")}
-          </select></div>`;
+          </select>`;
+        if(showReason){
+          h+=`<select onchange="data.phases[${pi}].wps[${wi}].or=this.value;save();render()" style="border-color:var(--r);color:var(--r);font-weight:600">
+            <option value=""${!w.or?" selected":""}>⚠ Reason?</option>
+            <option value="crashed"${w.or==="crashed"?" selected":""}>⚡ Crashed</option>
+            <option value="overspend"${w.or==="overspend"?" selected":""}>↑ Overspend</option>
+            <option value="scope_change"${w.or==="scope_change"?" selected":""}>↔ Scope change</option>
+            <option value="vendor"${w.or==="vendor"?" selected":""}>⊘ Vendor issue</option>
+          </select>`;
+        }
+        h+=`</div>`;
       });
       h+=`</div>`;
     });
     h+=`<div class="f13 fw7 mb12" style="margin-top:20px">Cross-Phase</div>`;
     data.cross.items.forEach((it,i)=>{
-      h+=`<div style="display:grid;grid-template-columns:60px 1fr 120px 100px;gap:8px;align-items:center;padding:6px 10px;border-bottom:1px solid var(--s3);font-size:12px">
+      h+=`<div style="display:grid;grid-template-columns:50px 1fr 110px 80px;gap:8px;align-items:center;padding:8px 10px;border-bottom:1px solid var(--s3);font-size:12px">
         <span class="mono" style="color:var(--b)">${it.id}</span><span style="color:var(--t2)">${it.n}</span>
         <input type="number" value="${it.s}" min="0" step="1000" onchange="data.cross.items[${i}].s=+this.value||0;save();render()">
         <span class="f11" style="color:var(--t3)">/ ${$(it.b)}</span></div>`;
     });
+
+    // Overspend summary
+    const overWps=c.allW.filter(w=>w.s>w.b);
+    if(overWps.length){
+      h+=`<div class="f14 fw7" style="margin-top:24px;margin-bottom:10px">Over-Budget Work Packages</div>`;
+      h+=`<div class="card" style="padding:0;overflow:hidden"><table><thead><tr><th>WBS</th><th class="left">Work Package</th><th>Budget</th><th>Spent</th><th>Over by</th><th>Reason</th></tr></thead><tbody>`;
+      overWps.forEach(w=>{
+        const reasons={"crashed":"⚡ Crashed","overspend":"↑ Overspend","scope_change":"↔ Scope change","vendor":"⊘ Vendor issue"};
+        h+=`<tr><td class="mono fw7" style="color:var(--b)">${w.id}</td><td class="left">${w.n}</td><td class="mono">${$(w.b)}</td><td class="mono" style="color:var(--r)">${$(w.s)}</td><td class="mono fw7" style="color:var(--r)">+${$(w.s-w.b)}</td><td>${w.or?pill(w.or==="crashed"?"var(--b)":"var(--r)",reasons[w.or]||"—"):pill("var(--a)","⚠ Not set")}</td></tr>`;
+      });
+      h+=`</tbody></table></div>`;
+    }
+  }
+
+  else if(view==="guide"){
+    h+=`<div class="f15 fw7 mb20">Dashboard User Guide</div>`;
+
+    h+=`<div class="card mb16" style="border-left:4px solid var(--b)">
+      <div class="f14 fw7 mb12" style="color:var(--b)">For the Examiner / Sensor</div>
+      <div class="f13" style="color:var(--t2);line-height:1.8">
+        This dashboard is the centralised monitoring and control tool for the KelpLoop project, as described in Section 5.9.3 of the coursework. It is a <strong style="color:var(--t1)">live, interactive tool</strong> — not a static mockup. All data entered persists in the browser (localStorage) and all views update in real time.<br><br>
+        The dashboard implements <strong style="color:var(--t1)">Earned Value Management</strong> principles (Larson & Gray, 2024) with traffic-light indicators (green / amber / red) for budget and schedule health. It directly supports the project's stage-gate governance model (Cooper, 2008) with milestone tracking and gate-readiness visibility.<br><br>
+        <strong style="color:var(--t1)">To explore the dashboard with sample data:</strong> Navigate to the <strong>Update</strong> tab, enter spent amounts and change work package statuses. Then return to <strong>Dashboard</strong> to see all KPIs, donuts, and phase cards update automatically.
+      </div>
+    </div>`;
+
+    h+=`<div class="f14 fw7 mb12">How Each Tab Works</div>`;
+    h+=`<div class="grid g4 mb24">`;
+    [
+      ["Dashboard","Primary overview with 6 KPIs, 4 donut charts (WP status, budget allocation, prototype progress, testing progress), phase health cards, and next milestone countdown. All values are calculated live from the data entered in the Update tab.","var(--b)"],
+      ["Phases","Detailed table per phase showing every work package with budget, actual spend, status, and crash options. Colour-coded spend indicators shift from green → amber → red as budget is consumed.","var(--g)"],
+      ["Budget","Budget consumption bars per phase with automatic overspend warnings. Shows working budget, remaining funds, management buffer, and cap. Warning boxes appear automatically when a phase exceeds its allocation.","var(--a)"],
+      ["CSFs & KPIs","The 7 Critical Success Factors from Section 5.7, with auto-calculated status based on work package progress. Each CSF is linked to a specific WP — when that WP is marked completed, the CSF status updates to 'Achieved'.","var(--b)"],
+      ["Risk Analysis","Full risk register (15 risks), 5×5 probability-impact matrix, EMV calculation, and delay scenario analysis showing crash capacity vs. worst-case delay per phase. Supports the risk management approach described in Section 5.8.","var(--r)"],
+      ["Crash","Schedule compression options per phase. Shows cost per day saved for each crashable work package and the critical-path maximum recovery per phase. Parallel tasks are not double-counted.","var(--b)"],
+      ["Update","Data entry interface. Enter actual costs and change WP statuses here. When a work package goes over budget, a reason selector appears: Crashed (deliberate), Overspend, Scope Change, or Vendor Issue. A summary table of all over-budget WPs is shown at the bottom.","var(--g)"],
+    ].forEach(([title,desc,col])=>{
+      h+=`<div class="card" style="border-top:3px solid ${col}"><div class="f13 fw7 mb12" style="color:${col}">${title}</div><div class="f12" style="color:var(--t2);line-height:1.6">${desc}</div></div>`;
+    });
+    h+=`</div>`;
+
+    h+=`<div class="f14 fw7 mb12">Step-by-Step: Entering Project Data</div>`;
+    h+=`<div class="card mb24"><div class="f12" style="color:var(--t2);line-height:1.9">`;
+    [
+      ["1. Set the simulation date","Use the <strong>Date</strong> picker in the header to set the current project date. This controls schedule health calculations — phases before this date with incomplete WPs will show as 'Behind Schedule'."],
+      ["2. Go to the Update tab","Click <strong>Update</strong> in the navigation bar."],
+      ["3. Enter actual costs","For each work package, enter the amount spent so far in the input field. The value next to it shows the planned budget for comparison."],
+      ["4. Set work package status","Use the dropdown to set each WP to: Not Started, In Progress, Completed, Delayed, or At Risk."],
+      ["5. Classify overspend (if applicable)","When a completed or in-progress WP exceeds its budget, a red dropdown appears. Select the reason: <strong>⚡ Crashed</strong> if the overspend was a deliberate schedule compression decision, or <strong>↑ Overspend</strong> / <strong>↔ Scope change</strong> / <strong>⊘ Vendor issue</strong> for unplanned overruns."],
+      ["6. Return to Dashboard","All KPIs, charts, and health indicators update instantly. No save button needed — data persists automatically."],
+    ].forEach(([step,desc])=>{
+      h+=`<div style="margin-bottom:12px"><strong style="color:var(--t1)">${step}</strong><br>${desc}</div>`;
+    });
+    h+=`</div></div>`;
+
+    h+=`<div class="f14 fw7 mb12">Traffic-Light Logic</div>`;
+    h+=`<div class="card mb24" style="padding:0;overflow:hidden"><table><thead><tr><th class="left">Indicator</th><th>Green</th><th>Amber</th><th>Red</th></tr></thead><tbody>
+      <tr><td class="left fw7">Budget health</td><td>${pill("var(--g)","≤ 85% consumed")}</td><td>${pill("var(--a)","85–100%")}</td><td>${pill("var(--r)","> 100%")}</td></tr>
+      <tr><td class="left fw7">Schedule health</td><td>${pill("var(--g)","Progress ≥ time elapsed")}</td><td>${pill("var(--a)","Slightly behind (< 30%)")}</td><td>${pill("var(--r)","Behind or overdue")}</td></tr>
+      <tr><td class="left fw7">CSF status</td><td>${pill("var(--g)","Achieved / On Track")}</td><td>${pill("var(--a)","At Risk / Warning")}</td><td>${pill("var(--r)","Failed / Over")}</td></tr>
+      <tr><td class="left fw7">Risk rating</td><td>${pill("var(--g)","Score 1–3")}</td><td>${pill("var(--a)","Score 8–14")}</td><td>${pill("var(--r)","Score 15–25")}</td></tr>
+    </tbody></table></div>`;
+
+    h+=`<div class="f14 fw7 mb12">Technical Notes</div>`;
+    h+=`<div class="card" style="border-left:4px solid var(--n)"><div class="f12" style="color:var(--t2);line-height:1.7">
+      <strong style="color:var(--t1)">Data persistence:</strong> All entered data is stored in the browser's localStorage. Clearing browser data or using incognito mode will reset to defaults. Use the <strong>Reset</strong> button on the Update tab to restore initial values.<br><br>
+      <strong style="color:var(--t1)">Hosting:</strong> This is a single HTML file with no external dependencies beyond Google Fonts. It can be hosted on GitHub Pages, any static file server, or opened directly in a browser.<br><br>
+      <strong style="color:var(--t1)">Framework alignment:</strong> PMI PMBOK 7th Edition, APM Body of Knowledge (2025), Larson & Gray (2024), Cooper (2008) Stage-Gate model, Hillson (2009) risk management methodology.
+    </div></div>`;
   }
 
   app.innerHTML=h;
